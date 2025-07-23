@@ -1,12 +1,9 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
+import { useState, useEffect } from 'react';
 
-// IMPORTANTE: Reemplaza con tu ID real de Formspree
+// Cambiá por tu URL real de Formspree
 const FORMSPREE_URL = "https://formspree.io/f/mqabokng";
-// IMPORTANTE: Reemplaza con tu Site Key real de reCAPTCHA
-const RECAPTCHA_SITE_KEY = "6Lfa8XcrAAAAAIE3F-fo0N4-zzTp6mtqAdvP0gOo";
 
 type ContactModalProps = {
   isOpen: boolean;
@@ -14,19 +11,14 @@ type ContactModalProps = {
 };
 
 const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Reinicia el estado del formulario cuando el modal se abre/cierra
   useEffect(() => {
     if (isOpen) {
       setSuccess(null);
       setError(null);
-      if (recaptchaRef.current) {
-        recaptchaRef.current.reset();
-      }
     }
   }, [isOpen]);
 
@@ -35,50 +27,39 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
     setSuccess(null);
     setError(null);
 
-    const recaptchaValue = recaptchaRef.current?.getValue();
-
-    if (!recaptchaValue) {
-      setError('Por favor, confirmá que no sos un robot.');
-      return;
-    }
-
     const form = e.currentTarget;
     const formData = new FormData(form);
-    formData.append('g-recaptcha-response', recaptchaValue);
 
     setLoading(true);
     try {
       const res = await fetch(FORMSPREE_URL, {
         method: 'POST',
         body: formData,
-        headers: {
-          Accept: "application/json",
-        },
+        headers: { Accept: "application/json" },
       });
       const data = await res.json();
       if (data.ok) {
         setSuccess('¡Mensaje enviado! Nos pondremos en contacto con vos a la brevedad para hablar de tu proyecto.');
         form.reset();
-        recaptchaRef.current?.reset();
       } else {
         setError('Ocurrió un error al enviar el mensaje. Por favor, intentá de nuevo o escribinos directamente a infoaereovista@gmail.com');
       }
-    } catch (err) {
+    } catch {
       setError('No se pudo enviar el mensaje. Asegurate de tener conexión a internet y volvé a intentar.');
     }
     setLoading(false);
   };
 
-  if (!isOpen) return null; // No renderiza el modal si no está abierto
+  if (!isOpen) return null;
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 transition-opacity duration-300 animate-fade-in"
-      onClick={onClose} // Cierra el modal al hacer clic fuera
+      onClick={onClose}
     >
       <div
         className="relative max-w-2xl w-full bg-white p-8 rounded-xl shadow-2xl border border-gray-200 max-h-[90vh] overflow-y-auto transform transition-transform duration-300 animate-slide-up"
-        onClick={e => e.stopPropagation()} // Evita que el modal se cierre al hacer clic dentro
+        onClick={e => e.stopPropagation()}
       >
         <button
           type="button"
@@ -171,19 +152,15 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
               disabled={loading}
             ></textarea>
           </div>
-          <div className="flex justify-center">
-            <ReCAPTCHA
-              sitekey={RECAPTCHA_SITE_KEY}
-              ref={recaptchaRef}
-            />
-          </div>
+
           {success && <div className="text-green-600 text-center font-semibold mt-4">{success}</div>}
           {error && <div className="text-red-600 text-center font-semibold mt-4">{error}</div>}
+
           <div className="text-center">
             <button
               type="submit"
-              className={`inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-transform duration-300 hover:scale-105 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
               disabled={loading}
+              className={`inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-transform duration-300 hover:scale-105 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               {loading ? (
                 <>

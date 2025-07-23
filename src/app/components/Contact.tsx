@@ -1,12 +1,10 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
+import { useState } from 'react';
 
 const FORMSPREE_URL = "https://formspree.io/f/mqabokng"; // Asegurate que este sea tu ID de Formspree
 
 const Contact = () => {
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -17,16 +15,8 @@ const Contact = () => {
     setSuccess(null);
     setError(null);
 
-    const recaptchaValue = recaptchaRef.current?.getValue();
-
-    if (!recaptchaValue) {
-      setError('Por favor, confirmá que no sos un robot.');
-      return;
-    }
-
     const form = e.currentTarget;
     const formData = new FormData(form);
-    formData.append('g-recaptcha-response', recaptchaValue);
 
     setLoading(true);
     try {
@@ -41,12 +31,10 @@ const Contact = () => {
       if (data.ok) {
         setSuccess('¡Mensaje enviado! Nos pondremos en contacto con vos a la brevedad para hablar de tu proyecto.');
         form.reset();
-        recaptchaRef.current?.reset();
       } else {
-        // Mejorar el mensaje de error para dar una alternativa
         setError('Ocurrió un error al enviar el mensaje. Por favor, intentá de nuevo o escribinos directamente a infoaereovista@gmail.com');
       }
-    } catch (err) {
+    } catch {
       setError('No se pudo enviar el mensaje. Asegurate de tener conexión a internet y volvé a intentar.');
     }
     setLoading(false);
@@ -56,7 +44,6 @@ const Contact = () => {
     <section id="contacto" className="py-20 bg-gray-50">
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
-          {/* Título MEJORADO para ser más conciso y consistente */}
           <h2 className="text-4xl md:text-5xl font-extrabold text-gray-800 leading-tight">
             <span className="text-blue-600">Contactanos</span>
           </h2>
@@ -142,12 +129,6 @@ const Contact = () => {
                 className="w-full bg-gray-100 border border-gray-300 rounded-lg py-2 px-4 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
                 disabled={loading}
-              ></textarea>
-            </div>
-            <div className="flex justify-center">
-              <ReCAPTCHA
-                sitekey="6Lfa8XcrAAAAAIE3F-fo0N4-zzTp6mtqAdvP0gOo" // Asegurate de que esta sea tu Site Key de reCAPTCHA
-                ref={recaptchaRef}
               />
             </div>
             {success && <div className="text-green-600 text-center font-semibold mt-4">{success}</div>}
