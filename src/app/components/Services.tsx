@@ -1,6 +1,6 @@
 'use client'; 
 
-import { useState } from 'react'; 
+import { useState } from 'react';
 import Link from 'next/link';
 import {
   BuildingOffice2Icon,
@@ -151,3 +151,7 @@ const Services = () => {
     </section>
   );
 };
+
+// ...todo tu código de Services...
+
+export default Services;
