@@ -127,17 +127,14 @@ const blogPosts = [
 ];
 
 // -----------------------------------------------------------------------------
-
+// Función para obtener el post por slug
 function getPostBySlug(slug: string) {
   return blogPosts.find((post) => post.slug === slug);
 }
 
-// ==== CORRECCIÓN DE GENERATE METADATA ====
-export async function generateMetadata(
-  props: { params: { slug: string } }
-): Promise<Metadata> {
-  const { params } = (await props) as { params: { slug: string } };
-  const post = getPostBySlug(params.slug);
+// ==== Función para generar metadata dinámica ====
+export async function generateMetadata(props: any): Promise<Metadata> {
+  const post = getPostBySlug(props.params.slug);
 
   if (!post) {
     return {
@@ -164,7 +161,7 @@ export async function generateMetadata(
   };
 }
 
-// ==== PAGE COMPONENT ====
+// ==== Componente de página principal ====
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = getPostBySlug(params.slug);
 
