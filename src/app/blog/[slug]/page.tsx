@@ -1,4 +1,4 @@
-// app/blog/[slug]/page.tsx
+// src/app/blog/[slug]/page.tsx
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -6,7 +6,6 @@ import type { Metadata } from 'next';
 
 // --- BASE DE DATOS DE ARTÍCULOS EXPANDIDA A 6 POSTS ---
 const blogPosts = [
-  // --- Posts Existentes ---
   {
     slug: "optimizacion-obra-drones-fotogrametria-2025",
     title: "Cómo la Fotogrametría con Drones Optimiza tu Obra en 2025",
@@ -70,7 +69,6 @@ const blogPosts = [
       <p class="text-lg leading-relaxed mb-4">Nuestros vuelos y reportes sirven como una documentación fehaciente del estado de la obra y de las medidas de seguridad implementadas. En <strong>AEREovista</strong>, todos nuestros pilotos están certificados y operan bajo los más estrictos protocolos de seguridad y cumplimiento de la normativa vigente en Argentina, dándote la tranquilidad que necesitás para enfocarte en construir.</p>
     `
   },
-  // --- NUEVOS ARTÍCULOS ---
   {
     slug: "roi-drones-construccion-argentina",
     title: "El ROI de un Drone en tu Obra: Más Allá del Video Bonito",
@@ -127,14 +125,18 @@ const blogPosts = [
     `
   },
 ];
-// -----------------------------------------------------------------------------
 
+// -----------------------------------------------------------------------------
 
 function getPostBySlug(slug: string) {
   return blogPosts.find((post) => post.slug === slug);
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+// ==== CORRECCIÓN DE GENERATE METADATA ====
+export async function generateMetadata(
+  props: { params: { slug: string } }
+): Promise<Metadata> {
+  const { params } = (await props) as { params: { slug: string } };
   const post = getPostBySlug(params.slug);
 
   if (!post) {
@@ -162,7 +164,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-
+// ==== PAGE COMPONENT ====
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = getPostBySlug(params.slug);
 
@@ -173,7 +175,6 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   return (
     <article className="py-24 pt-40 bg-white">
       <div className="container mx-auto px-6 max-w-3xl">
-        
         <div className="text-center mb-12">
           <p className="text-blue-600 font-semibold">{post.date}</p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 leading-tight mt-2">
@@ -191,14 +192,17 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             priority
           />
         </div>
-        
+
         <div
           className="prose lg:prose-xl max-w-none mx-auto text-gray-700"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
 
         <div className="text-center mt-16">
-          <Link href="/blog" className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 hover:scale-105 transform text-lg">
+          <Link
+            href="/blog"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 hover:scale-105 transform text-lg"
+          >
             &larr; Volver a todos los artículos
           </Link>
         </div>
