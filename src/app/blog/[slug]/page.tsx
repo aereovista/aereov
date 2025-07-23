@@ -1,4 +1,3 @@
-// src/app/blog/[slug]/page.tsx
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -127,22 +126,20 @@ const blogPosts = [
 ];
 
 // -----------------------------------------------------------------------------
-// Función para obtener el post por slug
+// Función para obtener post por slug
 function getPostBySlug(slug: string) {
-  return blogPosts.find((post) => post.slug === slug);
+  return blogPosts.find(post => post.slug === slug);
 }
 
-// ==== Función para generar metadata dinámica ====
-export async function generateMetadata(props: any): Promise<Metadata> {
-  const post = getPostBySlug(props.params.slug);
-
+// Función para generar metadata dinámico
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const post = getPostBySlug(params.slug);
   if (!post) {
     return {
       title: "Artículo no encontrado",
       description: "El artículo que buscas no existe o fue movido.",
     };
   }
-
   return {
     title: `${post.title} | AEREovista`,
     description: post.excerpt,
@@ -161,7 +158,7 @@ export async function generateMetadata(props: any): Promise<Metadata> {
   };
 }
 
-// ==== Componente de página principal ====
+// Componente página para mostrar post
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = getPostBySlug(params.slug);
 
