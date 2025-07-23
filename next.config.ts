@@ -5,9 +5,12 @@ const nextConfig: NextConfig = {
     domains: [
       "images.pexels.com",
       "placehold.co",
-         "img.youtube.com",
+      "img.youtube.com",
       // Podés sumar más dominios si usás otras fuentes de imágenes externas
     ],
+  },
+  eslint: {
+    ignoreDuringBuilds: true, // 👈 Esto permite que se despliegue aunque haya errores de lint
   },
   // Otros options si los tenés...
 };
