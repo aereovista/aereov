@@ -1,4 +1,4 @@
-'use client'; 
+'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -27,25 +27,19 @@ const servicePackages = [
         icon: <BuildingOffice2Icon className="h-8 w-8 text-white" />,
         title: "Seguimiento de Obra Aéreo",
         description: "Monitoreo periódico con imágenes y videos de alta resolución para un control total del avance, detectando desvíos a tiempo.",
-        callToAction: "Ver Proyectos",
-        actionType: "link",
-        link: "#portfolio",
+        callToAction: "Solicitar Presupuesto",
       },
       {
         icon: <CalendarDaysIcon className="h-8 w-8 text-white" />,
         title: "Reportes y Time-Lapse",
         description: "Documentación periódica del progreso, creando informes visuales y videos time-lapse impactantes para inversores y clientes.",
-        callToAction: "Ver Proyectos",
-        actionType: "link",
-        link: "#portfolio",
+        callToAction: "Solicitar Presupuesto",
       },
       {
         icon: <PhotoIcon className="h-8 w-8 text-white" />,
         title: "Marketing del Proyecto",
         description: "Fotografía y video aéreo profesional para presentar su proyecto, documentar hitos y potenciar sus estrategias de venta.",
-        callToAction: "Ver Proyectos",
-        actionType: "link",
-        link: "#portfolio",
+        callToAction: "Solicitar Presupuesto",
       },
     ]
   },
@@ -59,29 +53,22 @@ const servicePackages = [
         title: "Fotogrametría y Mapeo 3D",
         description: "Generamos ortofotos georreferenciadas y modelos 3D precisos para un análisis técnico detallado de terrenos y estructuras.",
         callToAction: "Solicitar Presupuesto",
-        actionType: "modal",
-        link: "#contacto",
       },
       {
         icon: <ChartBarIcon className="h-8 w-8 text-white" />,
         title: "Cálculo de Volúmenes y Acopios",
         description: "Mediciones exactas de movimientos de tierra y stock de materiales para una gestión eficiente y una reducción de costos certificada.",
         callToAction: "Solicitar Presupuesto",
-        actionType: "modal",
-        link: "#contacto",
       },
       {
         icon: <ShieldCheckIcon className="h-8 w-8 text-white" />,
         title: "Inspección Técnica de Fachadas 3D",
         description: "Evaluación de estructuras críticas con modelos 3D de alta definición. Detecte fisuras y patologías sin andamios ni riesgos.",
         callToAction: "Solicitar Presupuesto",
-        actionType: "modal",
-        link: "#contacto",
       },
     ]
   },
 ];
-
 
 const Services = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -110,7 +97,7 @@ const Services = () => {
               </div>
               <p className="text-gray-600 mt-3 text-md max-w-2xl mx-auto">{pkg.packageDescription}</p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12 max-w-7xl mx-auto">
               {pkg.items.map((item, itemIndex) => (
                 <div
@@ -124,22 +111,14 @@ const Services = () => {
                     <h4 className="text-xl font-bold mb-4 text-gray-900 group-hover:text-blue-700 transition-colors duration-300">{item.title}</h4>
                     <p className="text-gray-600 text-base leading-relaxed mb-8">{item.description}</p>
                   </div>
-                  
-                  {item.actionType === "link" ? (
-                    <Link
-                      href={item.link}
-                      className="mt-auto inline-block px-6 py-3 border border-transparent text-base font-semibold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 shadow-md"
-                    >
-                      {item.callToAction}
-                    </Link>
-                  ) : (
-                    <button
-                      onClick={openModal}
-                      className="mt-auto inline-block px-6 py-3 border border-transparent text-base font-semibold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 shadow-md"
-                    >
-                      {item.callToAction}
-                    </button>
-                  )}
+
+                  {/* Botón que SIEMPRE abre el modal */}
+                  <button
+                    onClick={openModal}
+                    className="mt-auto inline-block px-6 py-3 border border-transparent text-base font-semibold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 shadow-md"
+                  >
+                    {item.callToAction}
+                  </button>
                 </div>
               ))}
             </div>
@@ -151,7 +130,5 @@ const Services = () => {
     </section>
   );
 };
-
-// ...todo tu código de Services...
 
 export default Services;
